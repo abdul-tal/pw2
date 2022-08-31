@@ -8,8 +8,53 @@
   </head>
   <body>
     <button onclick="subscribe()">Subscribe</button>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-analytics.js";
+      import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-messaging.js"
 
-    <script>
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+          apiKey: "AIzaSyB39xSxaHiR2YAlwi6Suc1Uek_6L6W-bpw",
+          authDomain: "test-firebase-web-push-bb5ad.firebaseapp.com",
+          projectId: "test-firebase-web-push-bb5ad",
+          storageBucket: "test-firebase-web-push-bb5ad.appspot.com",
+          messagingSenderId: "823079035007",
+          appId: "1:823079035007:web:b466e764e9e45b2f3b5f4a",
+          measurementId: "G-PQN7X9RTEQ"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+
+      // Initialize Firebase Cloud Messaging and get a reference to the service
+      const messaging = getMessaging(app);
+
+      // Add the public key generated from the console here.
+
+      function subscribe() {
+          Notification.requestPermission().then(permission => {
+              console.log('permission: ', permission);
+              if(permission === 'granted') {
+                console.log('getToken', getToken)
+                  getToken(messaging, {
+                      vapidKey: "BGdQF9AfPCbW5CNJgqmrzE_TMICsuyGeN0qmqwtbSUkok7fMODyLwzbLwwTAv9DEhC47M7EkjLNDSX0owAtnPoY"
+                  }).then(currentToken => {
+                      console.log('currentToken: ', currentToken)
+                  }).catch(err => console.log('errr', err))
+              }
+          })
+      }
+      window.subscribe = subscribe;
+    </script>
+
+    <!-- <script>
       async function subscribe() {
         let sw = await navigator.serviceWorker.ready;
         let push = await sw.pushManager.subscribe({
@@ -41,6 +86,6 @@
               token: 'MToyaWVTbkpMc1QzR1pnck51SUxFcXBROm9aenhPTEtfcWdTUEhzenFwa3B2OXpyOE0xY201blpZNTd6d0g0UzhuVjQ'
             });
           
-          </script>
+          </script> -->
   </body>
 </html>
